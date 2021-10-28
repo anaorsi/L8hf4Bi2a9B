@@ -1,0 +1,15 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##contig=<ID=chr22,length=50818468>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	AMOSTRA-LBB
+chr22	19039100	.	A	G	.	PASS	.	GT	0/1
+chr22	19764306	.	C	T	.	PASS	.	GT	0/1
+chr22	21975710	.	T	C	.	PASS	.	GT	0/1
+chr22	23069838	.	A	G	.	PASS	.	GT	0/1
+chr22	26027014	.	A	G	.	PASS	.	GT	1/1
+chr22	29441577	.	TTCC	T	.	PASS	.	GT	0/1
+chr22	33006594	.	C	T	.	PASS	.	GT	0/1
+chr22	35264882	.	G	T	.	PASS	.	GT	1/1
+chr22	37746461	.	A	G	.	PASS	.	GT	1/1
+chr22	43180898	.	G	A	.	PASS	.	GT	0/1

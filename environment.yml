@@ -1,0 +1,15 @@
+name: variant_calling
+channels:
+    - conda-forge
+    - defaults
+    - bioconda
+dependencies:
+    - bwa=0.7.17
+    - samtools
+    - fastp=0.23.1
+    - gzip=1.6
+    - bcftools=1.13
+    - htslib=1.13
+    - python=3.0
+    - bgzip=1.13
+
