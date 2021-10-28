@@ -40,6 +40,7 @@ bcftools filter -g3 -i 'QUAL>20 & DP>10' -Ov -o Outputs/variants_filt.vcf temp/v
 echo "Conferindo resultados com o arquivo pequeno-gabarito"
 python3 Scripts/checar_gabarito.py
 
-# Compactar arquivo VCF
+# Compactar arquivo VCF e copiar para pasta Outputs Exigidos
 echo "Compactando o arquivo VCF utilizando bgzip"
 bgzip Outputs/variants_filt.vcf
+cp Outputs/variants_filt.vcf.gz Outputs\ Exigidos/Dia_1.vcf.gz
