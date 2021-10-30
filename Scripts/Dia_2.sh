@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+printf "\n\n### DIA 2 ###\n\n"
 
 ### Preparação dos Arquivos
 
@@ -9,16 +10,16 @@ bgzip -d Inputs/coverage.bed.gz
 mv Inputs/coverage_copy.bed.gz Inputs/coverage.bed.gz
 
 ### Bedtools: Determinar variantes com overlap às regiões esperadas:
-../../../bedtools intersect -a Inputs/coverage.bed -b temp/variants_filt.vcf > temp/variants_filt_reg.bed
+bedtools intersect -a Inputs/coverage.bed -b temp/variants_filt.vcf > temp/variants_filt_reg.bed
 
 
 ### Bedtools: Determinar coberturas:
 # Das regiões que deveriam ter sido cobertas
-../../../bedtools coverage -a Inputs/coverage.bed -b temp/alignment.bam > temp/hist_good.bed
+bedtools coverage -a Inputs/coverage.bed -b temp/alignment.bam > temp/hist_good.bed
 
 # Das regiões que não deveriam ter sido cobertas
-../../../bedtools complement -i Inputs/coverage.bed -g Inputs/grch38.chr22.fasta.fai > temp/complement.bed
-../../../bedtools coverage -a temp/complement.bed -b temp/alignment.bam > temp/hist_bad.bed
+bedtools complement -i Inputs/coverage.bed -g Inputs/grch38.chr22.fasta.fai > temp/complement.bed
+bedtools coverage -a temp/complement.bed -b temp/alignment.bam > temp/hist_bad.bed
 
 
 ### Obtenção das informações solicitadas sobre o arquivo BAM com samtools
@@ -45,13 +46,13 @@ echo "mult_align "$MALIGN
 ### Novos ajustes baseados nos resultados observados
 
 # Questão 1: com bcftools, filtrar VCF para as regiões presentes no BED
-echo "Filtrando as variantes"
+printf "\n\nFiltrando as variantes\n"
 bcftools index temp/variants_filt.vcf.gz
 bcftools filter -R temp/variants_filt_reg.bed -Ov -o temp/variants_filt_reg.vcf temp/variants_filt.vcf.gz
 bcftools filter -i 'QUAL>215' -Ov -o temp/variants_filt_reg_filt.vcf temp/variants_filt_reg.vcf
 cp temp/variants_filt_reg_filt.vcf Outputs\ Exigidos/Dia_2.vcf
 
-# Questão 2: Com bedtools, gerar arquivo BED com regiões não cobertas (threshold determinado no QC)
+# Questão 2: Com bedtools, gerar arquivo BED com regiões pouco cobertas (threshold determinado no QC)
 awk -v OFS='\t' '{ if ($8 < 0.95 ) print $1, $2, $3, $4 }' temp/hist_good.bed > Outputs\ Exigidos/Dia_2.bed
 
 # Questão 3:
