@@ -4,8 +4,8 @@ with open('Inputs/pequeno-gabarito.vcf', 'r') as reader:
 	gaba = reader.readlines()
 reader.close()
 
-# Leitura do pequeno-gabarito
-with open('Outputs/variants_filt2.vcf', 'r') as reader:
+# Leitura das variantes
+with open('temp/variants_filt.vcf', 'r') as reader:
 	mine = reader.readlines()
 reader.close()
 
@@ -38,10 +38,10 @@ for i in gaba[5:]:
 			
 			# Checagem dos valores esperados
 			if (ref==ref2) & (alt==alt2) & (pl==pl2):
-				miniflag = 1
+				mini_flag = 1
 			else:
 				flag = 1
-				miniflag = 1
+				mini_flag = 1
 				print("Problema na posição " + pos)
 				print("Ref: " + ref + " " + ref2)
 				print("Alt: " + alt + " " + alt2)

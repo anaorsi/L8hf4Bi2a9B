@@ -2,7 +2,6 @@
 
 # Criação de pastas para arquivos temporários e outputs desejados
 mkdir temp
-mkdir Outputs
 
 # Indexação da referência utilizando BWA
 echo "Indexação da referência com BWA"
@@ -15,7 +14,7 @@ mv fastp.json temp/
 
 # Alinhamento utilizando BWA
 echo "Alinhamento com BWA"
-../../../bwa/bwa mem Inputs/grch38.chr22.fasta.gz temp/limpo_R1.fq.gz temp/limpo_R2.fq.gz | samtools sort -o temp/alignment.bam -
+../../../bwa/bwa mem -M Inputs/grch38.chr22.fasta.gz temp/limpo_R1.fq.gz temp/limpo_R2.fq.gz | samtools sort -o temp/alignment.bam -
 
 # Indexação com Samtools
 echo "Indexação com Samtools"
@@ -30,11 +29,11 @@ bcftools mpileup --max-depth 1000000 --ff UNMAP,SECONDARY -f Inputs/grch38.chr22
 
 # Filtragem das variantes
 echo "Filtrando as variantes"
-bcftools filter -g3 -i 'QUAL>20 & DP>10' -Ov -o Outputs/variants_filt.vcf temp/variants.vcf
+bcftools filter -g3 -i 'QUAL>20 & DP>10' -Ov -o temp/variants_filt.vcf temp/variants.vcf
 
 # Estatísticas e plots (opcional)
-#bcftools stats Outputs/variants_filt.vcf > temp/to_plot.vchk
-#plot-vcfstats -p Outputs/outplot temp/to_plot.vchk
+#bcftools stats temp/variants_filt.vcf > temp/to_plot.vchk
+#plot-vcfstats -p temp/outplot temp/to_plot.vchk
 
 # Script em Python para checar se todas as variantes do "pequeno-gabarito.vcf" estão presentes no vcf final
 echo "Conferindo resultados com o arquivo pequeno-gabarito"
@@ -42,5 +41,7 @@ python3 Scripts/checar_gabarito.py
 
 # Compactar arquivo VCF e copiar para pasta Outputs Exigidos
 echo "Compactando o arquivo VCF utilizando bgzip"
-bgzip Outputs/variants_filt.vcf
-cp Outputs/variants_filt.vcf.gz Outputs\ Exigidos/Dia_1.vcf.gz
+cp temp/variants_filt.vcf temp/variants_filt_copy.vcf
+bgzip temp/variants_filt.vcf
+cp temp/variants_filt.vcf.gz Outputs\ Exigidos/Dia_1.vcf.gz
+mv temp/variants_filt_copy.vcf temp/variants_filt.vcf
